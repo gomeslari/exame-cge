@@ -21,10 +21,27 @@ async function createCategorias(req, res){
 
 }
 
+async function putCategorias(req, res) {
+    const id = req.params.id;
+    const categoriaAtualizada = req.body;
+
+    try {
+        const categoria = await Categoria.findByIdAndUpdate(id, categoriaAtualizada, { new: true });
+
+        if (!categoria) {
+            return res.status(404).json({ error: "Categoria não encontrada." });
+        }
+
+        return res.status(200).json(categoria);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+}
+
 async function deleteCategorias(req, res){
     const id = req.params.id
     await categoria.findByIdAndDelete({_id: id})
     return res.status(200).json({res: "Categoria deletada!"})
 }
 
-export {createCategorias, getCategorias, deleteCategorias}
+export {createCategorias, getCategorias, putCategorias,deleteCategorias}
